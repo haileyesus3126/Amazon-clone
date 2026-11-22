@@ -1,0 +1,2120 @@
+
+/* ==========================================================
+   PROJECT: AMAZON CLONE
+   DEVELOPER: HAILEYESUS
+   FILE: style.css
+
+   PURPOSE:
+   Create a professional and responsive
+   Amazon-inspired shopping website.
+
+   MAIN SECTIONS:
+   01. Global styles
+   02. Reusable components
+   03. Main navigation
+   04. Search bar
+   05. Bottom navigation
+   06. Mobile menu
+   07. Hero slider
+   08. Shopping categories
+   09. Today's Deals
+   10. Product cards
+   11. Search and filters
+   12. Gift cards
+   13. Customer service
+   14. Shopping cart
+   15. Footer
+   16. Toast notifications
+   17. Responsive design
+   18. Accessibility
+   ========================================================== */
+
+
+/* ==========================================================
+   01. CSS VARIABLES
+   ========================================================== */
+
+/*
+   :root stores reusable CSS variables.
+
+   Instead of repeating the same color many times,
+   we define it once and reuse it.
+
+   Example:
+   var(--color-primary)
+
+   This makes future design changes easier.
+*/
+
+:root {
+    --color-primary: #131921;
+    --color-secondary: #232f3e;
+    --color-accent: #febd69;
+    --color-accent-hover: #f3a847;
+    --color-yellow: #ffd814;
+    --color-yellow-hover: #f7ca00;
+
+    --color-background: #e3e6e6;
+    --color-surface: #ffffff;
+    --color-text: #0f1111;
+    --color-muted: #565959;
+    --color-border: #d5d9d9;
+    --color-link: #007185;
+    --color-danger: #b12704;
+    --color-success: #067d62;
+
+    --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.13);
+
+    --radius-small: 4px;
+    --radius-medium: 8px;
+    --radius-large: 12px;
+
+    --container-width: 1500px;
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
+
+/* ==========================================================
+   02. GLOBAL RESET
+   ========================================================== */
+
+/*
+   Remove default margin and padding.
+
+   border-box makes width calculations easier.
+*/
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.5;
+    min-width: 320px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+}
+
+button,
+input,
+select {
+    min-width: 0;
+}
+
+/*
+   The hidden attribute removes an element
+   until JavaScript makes it visible.
+
+   This rule is important because some CSS
+   display properties could otherwise override it.
+*/
+
+[hidden] {
+    display: none !important;
+}
+
+/*
+   Hide text visually while keeping it
+   available to screen readers.
+
+   We use this for input labels.
+*/
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* ==========================================================
+   03. REUSABLE CONTAINER
+   ========================================================== */
+
+/*
+   A container keeps content centered
+   and prevents it from becoming too wide.
+*/
+
+.container {
+    width: min(100% - 40px, var(--container-width));
+    margin-inline: auto;
+}
+
+
+/* ==========================================================
+   04. REUSABLE SECTION HEADINGS
+   ========================================================== */
+
+.section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.section-heading p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+.section-link {
+    color: var(--color-link);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.section-link:hover {
+    color: #c45500;
+    text-decoration: underline;
+}
+
+
+/* ==========================================================
+   05. REUSABLE BUTTONS
+   ========================================================== */
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 10px 22px;
+
+    border: 1px solid #fcd200;
+    border-radius: 999px;
+
+    background: var(--color-yellow);
+    color: var(--color-text);
+
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.primary-button:hover {
+    background: var(--color-yellow-hover);
+}
+
+.primary-button:active {
+    transform: scale(0.98);
+}
+
+
+/* ==========================================================
+   06. MAIN HEADER
+   ========================================================== */
+
+.site-header {
+    position: relative;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 68px;
+    padding: 10px 20px;
+
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+/* Logo */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    padding: 6px;
+    border: 1px solid transparent;
+}
+
+.nav-logo img {
+    width: 110px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Delivery location */
+
+.nav-country {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+
+    padding: 7px;
+    border: 1px solid transparent;
+}
+
+.nav-country img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.nav-country p {
+    font-size: 12px;
+    color: #cccccc;
+}
+
+.nav-country strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* Shared navigation text */
+
+.nav-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+
+    min-height: 44px;
+    padding: 5px;
+
+    border: 1px solid transparent;
+    cursor: default;
+}
+
+.nav-text span {
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.nav-text strong {
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* Navigation hover effect */
+
+.nav-logo:hover,
+.nav-country:hover,
+.nav-text:hover {
+    border-color: #ffffff;
+}
+
+
+/* ==========================================================
+   07. SEARCH BAR
+   ========================================================== */
+
+/*
+   The search form contains three parts:
+
+   1. Category select
+   2. Search input
+   3. Search button
+
+   Flexbox keeps them in one horizontal row.
+*/
+
+.nav-search {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+
+    min-width: 150px;
+    height: 42px;
+
+    border-radius: 5px;
+    overflow: hidden;
+
+    background: #ffffff;
+}
+
+.nav-search:focus-within {
+    outline: 3px solid #ff9900;
+    outline-offset: 2px;
+}
+
+/* Category dropdown */
+
+.nav-search-category {
+    width: 80px;
+    flex-shrink: 0;
+
+    padding: 0 8px;
+
+    border: none;
+    border-right: 1px solid #cdcdcd;
+
+    background: #e6e6e6;
+    color: #333333;
+
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.nav-search-category:hover {
+    background: #d4d4d4;
+}
+
+/* Search input */
+
+.nav-search-input {
+    flex: 1;
+    width: 100%;
+    padding: 0 12px;
+
+    border: none;
+    outline: none;
+
+    background: #ffffff;
+    color: var(--color-text);
+    font-size: 15px;
+}
+
+.nav-search-input::placeholder {
+    color: #777777;
+}
+
+/* Search button */
+
+.nav-search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    flex-shrink: 0;
+
+    border: none;
+    background: var(--color-accent);
+
+    transition: background var(--transition-fast);
+}
+
+.nav-search-button img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.nav-search-button:hover {
+    background: var(--color-accent-hover);
+}
+
+
+/* ==========================================================
+   08. LANGUAGE SELECTOR
+   ========================================================== */
+
+.nav-language {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+
+    padding: 8px 5px;
+    border: 1px solid transparent;
+}
+
+.nav-language img:first-child {
+    width: 22px;
+    height: 16px;
+    object-fit: cover;
+}
+
+.nav-language img:last-child {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+}
+
+.nav-language span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.nav-language:hover {
+    border-color: #ffffff;
+}
+
+
+/* ==========================================================
+   09. SHOPPING CART BUTTON
+   ========================================================== */
+
+.nav-cart {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+
+    padding: 5px 7px;
+
+    border: 1px solid transparent;
+    background: transparent;
+    color: #ffffff;
+}
+
+.nav-cart:hover {
+    border-color: #ffffff;
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.cart-icon-wrapper img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+.cart-count {
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    min-width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 3px;
+    border-radius: 999px;
+
+    color: #ff9900;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.nav-cart strong {
+    align-self: end;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+
+/* ==========================================================
+   10. SECONDARY NAVIGATION
+   ========================================================== */
+
+.nav-bottom {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    min-height: 42px;
+    padding: 0 20px;
+
+    background: var(--color-secondary);
+    color: #ffffff;
+
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.nav-bottom::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-bottom a,
+.menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    min-height: 40px;
+    padding: 8px 4px;
+
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.nav-bottom a:hover {
+    text-decoration: underline;
+}
+
+.menu-toggle {
+    border: none;
+    background: transparent;
+    font-weight: 700;
+}
+
+.menu-toggle img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ==========================================================
+   11. MOBILE MENU
+   ========================================================== */
+
+/*
+   JavaScript will remove the hidden attribute
+   when the user opens the menu.
+*/
+
+.mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: min(320px, 100%);
+    padding: 12px;
+
+    background: #ffffff;
+    box-shadow: var(--shadow-hover);
+    border-radius: 0 0 8px 8px;
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 12px 15px;
+
+    color: var(--color-text);
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.mobile-menu a:hover {
+    background: #f3f3f3;
+}
+
+
+/* ==========================================================
+   12. HERO IMAGE SLIDER
+   ========================================================== */
+
+/*
+   The slider contains six promotional images.
+
+   Each slide takes 100% of the slider width.
+
+   JavaScript will move the slider track.
+*/
+
+.header-slider {
+    position: relative;
+
+    width: 100%;
+    max-width: 1600px;
+    height: clamp(230px, 33vw, 500px);
+
+    margin: 0 auto;
+    overflow: hidden;
+
+    background: #ffffff;
+}
+
+.slider-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+
+    transition: transform 0.5s ease;
+    will-change: transform;
+}
+
+.slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Slider arrows */
+
+.control-prev,
+.control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 75px;
+
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.75);
+    color: #111111;
+
+    font-size: 25px;
+    z-index: 5;
+
+    transition: background var(--transition-fast);
+}
+
+.control-prev {
+    left: 15px;
+}
+
+.control-next {
+    right: 15px;
+}
+
+.control-prev:hover,
+.control-next:hover {
+    background: #ffffff;
+}
+
+/* Slider dots */
+
+.slider-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    z-index: 6;
+}
+
+.slider-dot {
+    width: 11px;
+    height: 11px;
+
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.slider-dot:hover {
+    transform: scale(1.2);
+}
+
+.slider-dot.active,
+.slider-dot[aria-current="true"] {
+    background: #ff9900;
+    border-color: #ffffff;
+}
+
+
+/* ==========================================================
+   13. GENERAL SECTION SPACING
+   ========================================================== */
+
+.categories-section,
+.deals-section,
+.products-section,
+.gift-card-section,
+.service-section {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+
+/* ==========================================================
+   14. SHOPPING CATEGORIES
+   ========================================================== */
+
+/*
+   CSS Grid makes it easy to create
+   a responsive category layout.
+*/
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    min-width: 0;
+    padding: 14px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-medium);
+
+    background: var(--color-surface);
+    text-align: left;
+
+    box-shadow: var(--shadow-card);
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: #f3d18a;
+}
+
+.category-card img {
+    display: block;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+    border-radius: 5px;
+    background: #f3f3f3;
+}
+
+.category-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.category-card span {
+    margin-top: auto;
+    color: var(--color-link);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ==========================================================
+   15. TODAY'S DEALS
+   ========================================================== */
+
+.deals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/*
+   The following classes will style
+   deal cards created by JavaScript.
+*/
+
+.deal-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    min-width: 0;
+    padding: 16px;
+
+    border: 1px solid #eeeeee;
+    border-radius: var(--radius-medium);
+
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.deal-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.deal-card img {
+    display: block;
+
+    width: 100%;
+    height: 190px;
+
+    object-fit: contain;
+    background: #f8f8f8;
+    border-radius: 5px;
+}
+
+.deal-badge {
+    display: inline-flex;
+    align-self: flex-start;
+
+    padding: 5px 9px;
+
+    background: #cc0c39;
+    color: #ffffff;
+
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.deal-card h3 {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.deal-prices {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.deal-price {
+    color: var(--color-danger);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.original-price {
+    color: var(--color-muted);
+    font-size: 13px;
+    text-decoration: line-through;
+}
+
+
+/* ==========================================================
+   16. PRODUCT FILTER TOOLBAR
+   ========================================================== */
+
+.product-toolbar {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    padding: 18px;
+    margin-bottom: 18px;
+
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 170px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.filter-select {
+    height: 42px;
+    padding: 0 12px;
+
+    border: 1px solid #adb1b8;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.filter-select:hover {
+    border-color: #777777;
+}
+
+.reset-filter-button {
+    min-height: 42px;
+    padding: 9px 18px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+
+    background: #f7fafa;
+    color: var(--color-text);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.reset-filter-button:hover {
+    background: #e7eeee;
+}
+
+.results-count {
+    margin-bottom: 15px;
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+
+/* ==========================================================
+   17. PRODUCT GRID
+   ========================================================== */
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/*
+   JavaScript will generate product cards
+   inside the product-grid element.
+*/
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    padding: 16px;
+
+    border: 1px solid #eeeeee;
+    border-radius: var(--radius-medium);
+
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.product-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 220px;
+
+    margin-bottom: 15px;
+
+    background: #f8f8f8;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-category {
+    color: var(--color-muted);
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.product-title {
+    margin: 8px 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.rating-stars {
+    color: #de7920;
+    letter-spacing: 1px;
+}
+
+.rating-value {
+    color: var(--color-link);
+    font-size: 13px;
+}
+
+.product-price {
+    margin-bottom: 12px;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.product-description {
+    margin-bottom: 14px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.add-to-cart,
+.add-to-cart-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 40px;
+
+    margin-top: auto;
+    padding: 9px 14px;
+
+    border: 1px solid #fcd200;
+    border-radius: 999px;
+
+    background: var(--color-yellow);
+    color: #111111;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: background var(--transition-fast);
+}
+
+.add-to-cart:hover,
+.add-to-cart-button:hover {
+    background: var(--color-yellow-hover);
+}
+
+
+/* ==========================================================
+   18. EMPTY SEARCH RESULTS
+   ========================================================== */
+
+.empty-state {
+    padding: 60px 20px;
+
+    background: #ffffff;
+    border-radius: var(--radius-medium);
+
+    text-align: center;
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    font-size: 23px;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+    color: var(--color-muted);
+}
+
+
+/* ==========================================================
+   19. GIFT CARD SECTION
+   ========================================================== */
+
+.gift-card-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 30px;
+
+    padding: 35px;
+
+    border-radius: var(--radius-large);
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+}
+
+.gift-card-content h2 {
+    margin-bottom: 12px;
+    font-size: clamp(24px, 3vw, 38px);
+    line-height: 1.2;
+}
+
+.gift-card-content p {
+    max-width: 480px;
+    margin-bottom: 20px;
+
+    color: var(--color-muted);
+    font-size: 15px;
+}
+
+.gift-card-content img {
+    width: 100%;
+    height: 280px;
+
+    object-fit: cover;
+    border-radius: var(--radius-medium);
+}
+
+
+/* ==========================================================
+   20. CUSTOMER SERVICE SECTION
+   ========================================================== */
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    padding: 30px 20px;
+
+    border-radius: var(--radius-medium);
+    background: #ffffff;
+
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}
+
+.service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 65px;
+    height: 65px;
+
+    margin-bottom: 15px;
+
+    border-radius: 50%;
+    background: #f3f6f8;
+
+    font-size: 30px;
+}
+
+.service-card h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.service-card p {
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+
+/* ==========================================================
+   21. CART OVERLAY
+   ========================================================== */
+
+/*
+   The overlay covers the page
+   when the shopping cart opens.
+*/
+
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 900;
+}
+
+
+/* ==========================================================
+   22. SHOPPING CART DRAWER
+   ========================================================== */
+
+.cart-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(440px, 100%);
+    height: 100vh;
+    height: 100dvh;
+
+    background: #ffffff;
+    box-shadow: -6px 0 30px rgba(0, 0, 0, 0.2);
+
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Cart heading */
+
+.cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 20px;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.cart-header h2 {
+    font-size: 21px;
+}
+
+.cart-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f1f3f3;
+    color: #111111;
+    font-size: 27px;
+}
+
+.cart-close:hover {
+    background: #e1e4e4;
+}
+
+/* Cart items */
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.cart-item {
+    display: flex;
+    gap: 14px;
+
+    padding: 16px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.cart-item-image {
+    width: 90px;
+    height: 90px;
+
+    flex-shrink: 0;
+    object-fit: contain;
+
+    background: #f8f8f8;
+    border-radius: 5px;
+}
+
+.cart-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-title {
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cart-item-price {
+    margin-bottom: 10px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.cart-quantity {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 4px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+}
+
+.cart-quantity button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f0f2f2;
+    font-size: 18px;
+}
+
+.cart-quantity button:hover {
+    background: #e1e5e5;
+}
+
+.cart-quantity span {
+    min-width: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.remove-item {
+    margin-top: 10px;
+
+    border: none;
+    background: transparent;
+
+    color: var(--color-link);
+    font-size: 13px;
+}
+
+.remove-item:hover {
+    color: var(--color-danger);
+    text-decoration: underline;
+}
+
+/* Empty cart */
+
+.cart-empty {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.cart-empty p {
+    margin-bottom: 12px;
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+.cart-empty .primary-button {
+    margin-top: 10px;
+}
+
+/* Cart summary */
+
+.cart-summary {
+    padding: 20px;
+
+    border-top: 1px solid var(--color-border);
+    background: #ffffff;
+}
+
+.cart-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+
+.cart-summary-row strong {
+    font-size: 22px;
+}
+
+.cart-note {
+    margin-bottom: 15px;
+    color: var(--color-muted);
+    font-size: 12px;
+}
+
+.checkout-button {
+    width: 100%;
+    min-height: 44px;
+
+    padding: 11px 15px;
+
+    border: 1px solid #fcd200;
+    border-radius: 999px;
+
+    background: var(--color-yellow);
+    color: #111111;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.checkout-button:hover {
+    background: var(--color-yellow-hover);
+}
+
+
+/* ==========================================================
+   23. FOOTER
+   ========================================================== */
+
+.site-footer {
+    margin-top: 50px;
+    background: var(--color-secondary);
+    color: #ffffff;
+}
+
+/* Back to top */
+
+.back-to-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 50px;
+    padding: 12px;
+
+    background: #37475a;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.back-to-top:hover {
+    background: #485769;
+}
+
+/* Main footer */
+
+.footer-main {
+    padding: 45px 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 35px;
+
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.footer-column h3 {
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.footer-column a {
+    color: #dddddd;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+/* Footer logo */
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    padding: 25px 20px;
+
+    border-top: 1px solid #3a4553;
+}
+
+.footer-brand img {
+    display: block;
+    width: 110px;
+    height: auto;
+}
+
+.footer-brand p {
+    color: #dddddd;
+    font-size: 13px;
+}
+
+/* Footer copyright */
+
+.footer-bottom {
+    padding: 25px 20px;
+
+    background: var(--color-primary);
+    text-align: center;
+}
+
+.footer-legal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    margin-bottom: 12px;
+}
+
+.footer-legal a {
+    color: #dddddd;
+    font-size: 12px;
+}
+
+.footer-legal a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom p {
+    color: #cccccc;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   24. TOAST NOTIFICATION
+   ========================================================== */
+
+/*
+   A toast is a small notification.
+
+   JavaScript will show it when:
+   - A product is added
+   - A product is removed
+   - The cart is updated
+*/
+
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+
+    max-width: min(380px, calc(100% - 32px));
+    padding: 15px 22px;
+
+    border-left: 4px solid var(--color-success);
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: var(--color-text);
+
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1100;
+}
+
+
+/* ==========================================================
+   25. RESPONSIVE DESIGN: LARGE TABLETS
+   ========================================================== */
+
+/*
+   Apply these styles when the screen
+   width is 1200px or smaller.
+*/
+
+@media (max-width: 1200px) {
+
+    .navbar {
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    .nav-country {
+        display: none;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .deals-grid,
+    .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ==========================================================
+   26. RESPONSIVE DESIGN: TABLETS
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .nav-language {
+        display: none;
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    .nav-search {
+        min-width: 100px;
+    }
+
+    .deals-grid,
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .service-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gift-card-content {
+        gap: 20px;
+        padding: 25px;
+    }
+
+}
+
+
+/* ==========================================================
+   27. RESPONSIVE DESIGN: MOBILE
+   ========================================================== */
+
+@media (max-width: 650px) {
+
+    .container {
+        width: calc(100% - 24px);
+    }
+
+    /* Rearrange the header into two rows */
+
+    .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        padding: 10px 12px;
+    }
+
+    .nav-logo {
+        order: 1;
+    }
+
+    .nav-logo img {
+        width: 95px;
+    }
+
+    .nav-cart {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .nav-search {
+        order: 3;
+        flex: 0 0 100%;
+        width: 100%;
+        height: 40px;
+    }
+
+    .nav-search-category {
+        width: 68px;
+        font-size: 11px;
+    }
+
+    .nav-search-button {
+        width: 44px;
+    }
+
+    /* Bottom navigation */
+
+    .nav-bottom {
+        gap: 14px;
+        padding: 0 12px;
+    }
+
+    .nav-bottom a,
+    .menu-toggle {
+        font-size: 12px;
+    }
+
+    /* Slider */
+
+    .header-slider {
+        height: 230px;
+    }
+
+    .control-prev,
+    .control-next {
+        width: 32px;
+        height: 55px;
+        font-size: 19px;
+    }
+
+    .control-prev {
+        left: 6px;
+    }
+
+    .control-next {
+        right: 6px;
+    }
+
+    .slider-dots {
+        bottom: 10px;
+        gap: 6px;
+    }
+
+    .slider-dot {
+        width: 9px;
+        height: 9px;
+    }
+
+    /* Section headings */
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .section-heading h2 {
+        font-size: 23px;
+    }
+
+    /* Categories */
+
+    .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .category-card {
+        padding: 12px;
+    }
+
+    .category-card h3 {
+        font-size: 14px;
+    }
+
+    /* Products */
+
+    .deals-grid,
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .deal-card,
+    .product-card {
+        padding: 12px;
+    }
+
+    .deal-card img {
+        height: 140px;
+    }
+
+    .product-image {
+        height: 150px;
+    }
+
+    .product-title,
+    .deal-card h3 {
+        font-size: 13px;
+    }
+
+    .product-price,
+    .deal-price {
+        font-size: 19px;
+    }
+
+    /* Filters */
+
+    .product-toolbar {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .filter-group {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+
+    .reset-filter-button {
+        width: 100%;
+    }
+
+    /* Gift cards */
+
+    .gift-card-content {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .gift-card-content img {
+        height: 200px;
+    }
+
+    /* Customer service */
+
+    .service-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .service-card {
+        padding: 22px 16px;
+    }
+
+    /* Footer */
+
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 25px 18px;
+    }
+
+    .footer-main {
+        padding: 35px 18px;
+    }
+
+    .footer-column h3 {
+        font-size: 14px;
+    }
+
+    .footer-column a {
+        font-size: 12px;
+    }
+
+    .footer-brand {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    /* Toast */
+
+    .toast {
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        max-width: none;
+    }
+
+}
+
+
+/* ==========================================================
+   28. RESPONSIVE DESIGN: SMALL MOBILE
+   ========================================================== */
+
+@media (max-width: 380px) {
+
+    .nav-logo img {
+        width: 85px;
+    }
+
+    .nav-cart strong {
+        font-size: 12px;
+    }
+
+    .header-slider {
+        height: 180px;
+    }
+
+    .category-grid,
+    .deals-grid,
+    .product-grid {
+        gap: 10px;
+    }
+
+    .category-card,
+    .deal-card,
+    .product-card {
+        padding: 10px;
+    }
+
+    .category-card h3 {
+        font-size: 13px;
+    }
+
+    .product-image {
+        height: 120px;
+    }
+
+    .deal-card img {
+        height: 120px;
+    }
+
+    .product-price,
+    .deal-price {
+        font-size: 17px;
+    }
+
+    .add-to-cart,
+    .add-to-cart-button {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .footer-grid {
+        gap: 22px 12px;
+    }
+
+}
+
+
+/* ==========================================================
+   29. KEYBOARD ACCESSIBILITY
+   ========================================================== */
+
+/*
+   :focus-visible shows an outline
+   when a user navigates with a keyboard.
+
+   This makes the website easier to use
+   without a mouse.
+*/
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 3px solid #ff9900;
+    outline-offset: 3px;
+}
+
+
+/* ==========================================================
+   30. REDUCED MOTION SUPPORT
+   ========================================================== */
+
+/*
+   Some users prefer less animation.
+
+   This rule respects the user's
+   operating system motion settings.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+
+}
+
+
+/* ==========================================================
+   END OF STYLE.CSS
+   ========================================================== */
+
+/*
+   WHAT WE LEARNED:
+
+   1. CSS variables
+   2. Global reset
+   3. Box model
+   4. Flexbox
+   5. CSS Grid
+   6. Responsive layouts
+   7. Media queries
+   8. Position relative and absolute
+   9. Fixed positioning
+   10. Z-index
+   11. Hover effects
+   12. Focus states
+   13. Transitions
+   14. Typography
+   15. Colors
+   16. Shadows
+   17. Borders
+   18. Border radius
+   19. Image sizing
+   20. Object-fit
+   21. Overflow
+   22. Reusable components
+   23. Mobile-first considerations
+   24. Accessibility
+   25. Reduced motion support
+
+   HTML = Structure
+   CSS = Design
+   JavaScript = Behavior
+*/
